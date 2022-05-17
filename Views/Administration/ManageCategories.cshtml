@@ -1,0 +1,44 @@
+﻿@model RecipeSiteAspNet.Models.Category;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Category";
+}
+
+<h2>Добавление Категории</h2>
+<form asp-action="CreateCategory" asp-controller="Administration">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="Name">Название</label><br />
+        <input class="form-control" type="text" asp-for="Name" />
+        <span asp-validation-for="Name" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="Description">Описание</label><br />
+        <textarea class="form-control" asp-for="Description"> </textarea>
+        <span asp-validation-for="Description" />
+    </div>
+
+    <div class="mb-3">
+        <input class="btn btn-primary btn-sm" type="submit" value="Добавить" />
+    </div>
+</form>
+
+<div class="container">
+    <h5>Все категории</h5>
+    @foreach (Category c in ViewBag.Categories)
+    {
+        <div class="m-1 p-2">
+            <p>@c.Name</p>
+            <p>@c.Description</p>
+            <form asp-action="DeleteCategory" asp-controller="Administration" asp-route-id=@c.CategoryID>
+                @Html.AntiForgeryToken()
+                <div class="m-1">
+                    <input class="btn btn-danger btn-sm mt-1 mb-1" type="submit" value="Удалить" />
+                </div>
+            </form>
+        </div>
+    }
+</div>

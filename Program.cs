@@ -36,6 +36,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    name: "administration",
+    pattern: "Administration/{action=RedactRecipes}/{id?}",
+    defaults: new { controller = "Administration" }
+);
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}"
 );

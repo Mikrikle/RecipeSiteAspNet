@@ -1,0 +1,29 @@
+﻿@model List<RecipeSiteAspNet.Models.Recipe>
+
+@{
+    ViewData["Title"] = "Recipes";
+}
+
+<div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+    @foreach (Recipe recipe in Model)
+    {
+        <a style="text-decoration: none;" asp-controller="Administration" asp-action="RecipeDetail" asp-route-id=@recipe.RecipeID>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        @recipe.Category?.Name
+                    </div>
+                    <img style="max-height:256px; object-fit: cover;" src="@Url.Content(@recipe.Img?.Path)" class="card-img-top img-thumbnail" alt="@recipe.Img?.Name">
+                    <div class="card-body">
+                        <h5 class="card-title text-truncate">@recipe.Name</h5>
+                        <p class="card-text text-truncate">@recipe.Description</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Время приготовления: @recipe.CookingTimeMinutes минут(ы)</small>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+    }
+</div>

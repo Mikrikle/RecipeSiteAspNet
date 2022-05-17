@@ -1,0 +1,41 @@
+﻿@model RecipeSiteAspNet.Models.Recipe;
+
+<div class="mb-3">
+    <label class="form-label" asp-for="Name">Название</label><br />
+    <input class="form-control" type="text" asp-for="Name" />
+    <span asp-validation-for="Name" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label" asp-for="Description">Описание</label><br />
+    <textarea class="form-control" asp-for="Description"> </textarea>
+    <span asp-validation-for="Description" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label" asp-for="Ingredients">Ингредиенты</label><br />
+    <textarea class="form-control" asp-for="Ingredients"> </textarea>
+    <span asp-validation-for="Ingredients" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label" asp-for="nServings">Количество порций</label><br />
+    <input class="form-control" type="number"  asp-for="nServings"/>
+    <span asp-validation-for="nServings" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label" asp-for="CookingTimeMinutes">Время приготовления</label><br />
+    <input class="form-control" type="number" asp-for="CookingTimeMinutes" />
+    <span asp-validation-for="CookingTimeMinutes" />
+</div>
+
+<div class="mb-3">
+    <label class="form-label" asp-for="CategoryID">Категория</label><br />
+    <select class="form-select" asp-for="CategoryID">
+        @foreach (Category c in ViewBag.Categories)
+        {
+            <option value="@c.CategoryID">@c.Name</option>
+        }
+    </select>
+</div>

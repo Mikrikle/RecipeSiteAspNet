@@ -1,0 +1,27 @@
+﻿@model RecipeSiteAspNet.Models.Recipe;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add";
+}
+
+<div class="container m-3 p-3 flex-row">
+    <h2>Добавление рецепта</h2>
+    <form asp-action="CreateRecipe" asp-controller="Administration" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <partial name="_RecipeForm.cshtml" />
+       
+        <p>
+            <input class="form-control" id="file" name="file" type="file" required />
+            <span class="field-validation-valid" data-valmsg-for="file" data-valmsg-replace="true"></span>
+        </p>
+
+        <div class="mb-3">
+            <input class="btn btn-primary btn-lg btn-block" type="submit" value="Сохранить" />
+        </div>
+
+    </form>
+</div>
+
+@section scripts{
+}
