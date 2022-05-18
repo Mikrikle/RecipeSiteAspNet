@@ -1,4 +1,8 @@
 ﻿@model RecipeSiteAspNet.Models.Recipe;
+@using Microsoft.AspNetCore.Identity;
+@using RecipeSiteAspNet.Areas.Identity.Data;
+@inject UserManager<RecipeSiteUser> UserManager
+
 
 <div class="mb-3">
     <label class="form-label" asp-for="Name">Название</label><br />
@@ -38,4 +42,5 @@
             <option value="@c.CategoryID">@c.Name</option>
         }
     </select>
+    <input type="hidden" asp-for="RecipeSiteUserID" value="@UserManager.GetUserId(User)" />
 </div>

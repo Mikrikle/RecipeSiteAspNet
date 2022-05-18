@@ -1,0 +1,91 @@
+﻿@model RecipeSiteAspNet.Models.Recipe;
+@using Microsoft.AspNetCore.Identity;
+@using RecipeSiteAspNet.Areas.Identity.Data;
+@inject UserManager<RecipeSiteUser> UserManager
+
+
+<div class="mx-auto container card p-3 m-1">
+    <!--Редактирование-->
+    <form id="formRecipe" method="post" asp-action="UpdateRecipe" asp-controller="Administration" asp-route-id=@Model.RecipeID enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <partial name="_RecipeForm.cshtml" />
+
+        <!--Загрузка изображений-->
+        <h5>Редкатирование изображения</h5>
+        <div class="m-3">
+            <img width="128" height="128" src="@Url.Content(@Model.Img?.Path)" alt="@Model.Img?.Name" />
+        </div>
+        <div class="mb-3">
+            <input class="form-control" name="file" type="file" />
+            <span class="field-validation-valid" data-valmsg-for="file" data-valmsg-replace="true"></span>
+        </div>
+
+        <div class="mb-3">
+            <input class="btn btn-primary btn-lg btn-block" type="submit" value="Сохранить" />
+        </div>
+
+    </form>
+
+    <!--Удаление-->
+    <div class="m-3">
+        <h5>Удалить рецепт</h5>
+        <form asp-action="DeleteRecipe" asp-controller="Administration" asp-route-id=@Model.RecipeID>
+            @Html.AntiForgeryToken()
+            <input class="btn btn-danger" type="submit" value="Удалить" />
+        </form>
+    </div>
+</div>
+
+<!--ШАГИ-->
+<div class="mx-auto container card m-2 p-3">
+    <h2>Шаги приготовления</h2>
+    <h5>Добавить шаг</h5>
+    <!--создание-->
+    <form id="formRecipeStep" asp-action="CreateRecipeStep" asp-controller="Administration" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="recipeId" value="@Model.RecipeID" />
+        <div class="mb-3">
+            <label class="form-label" for="file1">Изображение</label><br />
+            <input class="form-control" name="file1" type="file" required />
+        </div>
+        <span class="field-validation-valid" data-valmsg-for="file1" data-valmsg-replace="true"></span>
+
+        <div class="mb-3">
+            <label class="form-label" for="Description">Описание</label><br />
+            <textarea class="form-control" name="Description" required></textarea>
+        </div>
+        <span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>
+
+        <input class="btn btn-primary" type="submit" value="Добавить" />
+    </form>
+</div>
+
+
+
+@foreach (var stepItem in @Model.reciepeSteps)
+{
+    <div class="m-1">
+        <img style="max-height:128px;" class="img-fluid img-thumbnail" object-fit: cover;" src="@Url.Content(@stepItem.Img?.Path)" alt="@stepItem.Img?.Name" />
+    </div>
+    <!--РЕДАКТИРОВАНИЕ-->
+    <form id="formRecipeStep" asp-action="UpdateRecipeStep" asp-controller="Administration" method="post">
+        <div class="m-1">
+            <div>
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="ReciepeStepId" value="@stepItem.ReciepeStepID" />
+                <div class="mb-1">
+                    <textarea class="form-control" name="Description" required>@stepItem.Description</textarea>
+                </div>
+                <span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>
+            </div>
+            <input class="btn btn-primary btn-sm" type="submit" value="Сохранить" />
+        </div>
+    </form>
+    <!--УДАЛЕНИЕ-->
+    <form asp-action="DeleteRecipeStep" asp-controller="Administration" asp-route-id=@stepItem.ReciepeStepID>
+        @Html.AntiForgeryToken()
+        <div class="m-1">
+            <input class="btn btn-danger btn-sm mt-1 mb-1" type="submit" value="Удалить" />
+        </div>
+    </form>
+}

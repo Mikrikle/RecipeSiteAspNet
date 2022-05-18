@@ -20,6 +20,23 @@ namespace RecipeSiteAspNet.Controllers
         }
 
         [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> RecipeRedact(int? id)
+        {
+            if (id == null)
+                return NotFound();
+            Recipe? recipe = _db.Recipes.Include(r => r.Img).Include(r => r.Author)
+                .Single(r => r.RecipeID == id);
+            if (recipe == null)
+                return NotFound();
+            if (recipe.RecipeSiteUserID != _userManager.GetUserId(HttpContext.User))
+                return Forbid();
+
+            ViewBag.Categories = await _db.Categories.ToListAsync();
+            return View(recipe);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> RecipeDetail(int? id)
         {
             if (id == null)
@@ -34,18 +51,15 @@ namespace RecipeSiteAspNet.Controllers
                 .Include(s => s.Img)
                 .Where(s => s.RecipeID == id)
                 .ToListAsync();
-            // заполнение переменных для представления
-            ViewBag.IsAuthor = recipe.AuthorID == _userManager.GetUserId(HttpContext.User);
+            // создание модели представления
+            RecipeDetailModelView viewmodel = new RecipeDetailModelView
+            {
+                reciepeSteps = steps,
+                recipe = recipe
+            };
             ViewBag.Categories = await _db.Categories.ToListAsync();
-            ViewBag.Steps = (from step in steps
-                             select new { item = step, img = step.Img })
-                            .ToList();
-            if (recipe.Img != null)
-                ViewBag.Image = recipe.Img;
-            else
-                ViewBag.Image = _db.Images.First();
 
-            return View(recipe);
+            return View(viewmodel);
         }
 
         [HttpPost]
@@ -56,7 +70,7 @@ namespace RecipeSiteAspNet.Controllers
             Recipe? r = _db.Recipes.Include(r => r.Img).Single(r => r.RecipeID == id);
             if (r == null)
                 return NotFound();
-            if(r.AuthorID != _userManager.GetUserId(HttpContext.User))
+            if(r.RecipeSiteUserID != _userManager.GetUserId(HttpContext.User))
                 return Forbid();
             r.Name = recipe.Name;
             r.Description = recipe.Description;
@@ -94,7 +108,7 @@ namespace RecipeSiteAspNet.Controllers
             if (ModelState.IsValid)
             {
                 // создание рецепта
-                recipe.AuthorID = _userManager.GetUserId(HttpContext.User);
+                recipe.RecipeSiteUserID = _userManager.GetUserId(HttpContext.User);
                 recipe.CreatedDate = DateTime.Now;
                 _db.Recipes.Add(recipe);
                 _db.SaveChanges();
@@ -120,7 +134,7 @@ namespace RecipeSiteAspNet.Controllers
             Recipe? recipe = _db.Recipes.Find(id);
             if (recipe == null)
                 return NotFound();
-            if (recipe.AuthorID != _userManager.GetUserId(HttpContext.User))
+            if (recipe.RecipeSiteUserID != _userManager.GetUserId(HttpContext.User))
                 return Forbid();
             // Удаление изображений из wwwroot
             DeleteRecipeFiles(recipe.RecipeID);

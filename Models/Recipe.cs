@@ -21,9 +21,9 @@ namespace RecipeSiteAspNet.Models
         public List<ReciepeStep> reciepeSteps { get; set; } = new();
 
 
-        public string AuthorID { get; set; }
+        public string RecipeSiteUserID { get; set; }
         [BindNever]
-        [ForeignKey("AuthorID")]
+        [ForeignKey("RecipeSiteUserID")]
         public RecipeSiteUser? Author { get; set; }
 
         public int CategoryID { get; set; }
@@ -31,7 +31,7 @@ namespace RecipeSiteAspNet.Models
         public Category? Category { get; set; }
 
         [BindNever]
-        public int ImgID { get; set; }
+        public int? ImgID { get; set; }
         [BindNever]
         public virtual Img? Img { get; set; }
     }
