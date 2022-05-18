@@ -25,23 +25,23 @@ namespace RecipeSiteAspNet.Controllers
 
         private string GetFilePath(IFormFile file, int recipeID, bool isStepImg = false)
         {
-            string path = $"{_appEnvironment.WebRootPath}/Files/Recipe{recipeID}/";
+            string path = $"/Files/Recipe{recipeID}/";
             if (isStepImg)
                 path += $"Steps/";
-            path += file.FileName;
+            path += Guid.NewGuid().ToString() + file.FileName;
             return path;
         }
         
         private void DeleteRecipeStepFile(int recipeID, string filename)
         {
-            string path = $"{_appEnvironment.WebRootPath}/Files/Recipe{recipeID}/Steps/{filename}";
-            if(System.IO.File.Exists(path))
+            string path = Path.Combine(_appEnvironment.WebRootPath, $"Files\\Recipe{recipeID}\\Steps\\{filename}");
+            if (System.IO.File.Exists(path))
                 System.IO.File.Delete(path);
         }
 
         private void DeleteRecipeFiles(int recipeID)
         {
-            string path = $"{_appEnvironment.WebRootPath}/Files/Recipe{recipeID}/";
+            string path = Path.Combine(_appEnvironment.WebRootPath, $"Files\\Recipe{recipeID}");
             if (Directory.Exists(path))
             {
                 Directory.Delete(path, true);
@@ -50,7 +50,10 @@ namespace RecipeSiteAspNet.Controllers
 
         private void SaveFile(IFormFile file, string path)
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            path = path.Replace('/', '\\')[1..];
+            path = Path.Combine(_appEnvironment.WebRootPath, path);
+            string directoryName = Path.GetDirectoryName(path); 
+            Directory.CreateDirectory(directoryName);
             using (var output = new FileStream(path, FileMode.Create))
             {
                 file.CopyTo(output);

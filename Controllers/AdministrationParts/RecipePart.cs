@@ -26,6 +26,7 @@ namespace RecipeSiteAspNet.Controllers
             if (id == null)
                 return NotFound();
             Recipe? recipe = _db.Recipes.Include(r => r.Img).Include(r => r.Author)
+                .Include(r => r.reciepeSteps)
                 .Single(r => r.RecipeID == id);
             if (recipe == null)
                 return NotFound();
@@ -70,7 +71,7 @@ namespace RecipeSiteAspNet.Controllers
             Recipe? r = _db.Recipes.Include(r => r.Img).Single(r => r.RecipeID == id);
             if (r == null)
                 return NotFound();
-            if(r.RecipeSiteUserID != _userManager.GetUserId(HttpContext.User))
+            if (r.RecipeSiteUserID != _userManager.GetUserId(HttpContext.User))
                 return Forbid();
             r.Name = recipe.Name;
             r.Description = recipe.Description;
@@ -81,7 +82,7 @@ namespace RecipeSiteAspNet.Controllers
             if (file != null)
                 UpdateRecipeImage(file, r);
             _db.SaveChanges();
-            return RedirectToAction("RecipeDetail", "Redact", new { id = id }, null);
+            return RedirectToAction("RecipeDetail", "Administration", new { id = id }, null);
         }
 
         private void UpdateRecipeImage(IFormFile file, Recipe recipe)
@@ -123,7 +124,7 @@ namespace RecipeSiteAspNet.Controllers
                 _db.SaveChanges();
                 return RedirectToAction("RecipeDetail", "Administration", new { id = recipe.RecipeID }, null);
             }
-            return BadRequest();
+            return NotFound();
         }
 
         [HttpPost]
