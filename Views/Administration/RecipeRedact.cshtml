@@ -65,7 +65,7 @@
 @foreach (var stepItem in @Model.reciepeSteps)
 {
     <div class="m-1">
-        <img style="max-height:128px;" class="img-fluid img-thumbnail" object-fit: cover;" src="@Url.Content(@stepItem.Img?.Path)" alt="@stepItem.Img?.Name" />
+        <img class="img-fluid img-thumbnail" src="@Url.Content(@stepItem.Img?.Path)" alt="@stepItem.Img?.Name" />
     </div>
     <!--РЕДАКТИРОВАНИЕ-->
     <form id="formRecipeStep" asp-action="UpdateRecipeStep" asp-controller="Administration" method="post">

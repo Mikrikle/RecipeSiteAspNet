@@ -37,11 +37,13 @@
         {
             <div class="card p-2 mt-3 mb-3">
 
-                <div class="d-flex justify-content-right">
-                    <div class="m-1">
-                        <img style="max-height:128px;" class="img-fluid img-thumbnail" object-fit: cover;" src="@Url.Content(@stepItem.Img?.Path)" alt="@stepItem.Img?.Name" />
+                <div class="row">
+                    <div class="col-md-6">
+                        <img class="img-fluid img-thumbnail" object-fit: cover;" src="@Url.Content(@stepItem.Img?.Path)" alt="@stepItem.Img?.Name" />
                     </div>
-                    <p class="card-text text-wrap">@stepItem.Description</p>
+                    <div class="col-md-6">
+                        <p class="card-text text-wrap">@stepItem.Description</p>
+                    </div>
                 </div>
             </div>
         }

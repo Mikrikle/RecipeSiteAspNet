@@ -27,6 +27,7 @@ namespace RecipeSiteAspNet.Controllers
                 return NotFound();
             Recipe? recipe = _db.Recipes.Include(r => r.Img).Include(r => r.Author)
                 .Include(r => r.reciepeSteps)
+                    .ThenInclude(s => s.Img)
                 .Single(r => r.RecipeID == id);
             if (recipe == null)
                 return NotFound();
