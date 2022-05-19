@@ -4,7 +4,27 @@
 @inject UserManager<RecipeSiteUser> UserManager
 
 
-<div class="mx-auto container card p-3 m-1">
+<!-- Модальное окно -->
+<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p id="infoModalText"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ок</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <button class="m-auto btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRedactor" aria-expanded="false" aria-controls="collapseExample">
+        Открыть редактор рецепта
+    </button>
+</div>
+
+<div class="collapse mx-auto container card p-3 m-1" id="collapseRedactor">
     <!--Редактирование-->
     <form id="formRecipe" method="post" asp-action="UpdateRecipe" asp-controller="Administration" asp-route-id=@Model.RecipeID enctype="multipart/form-data">
         @Html.AntiForgeryToken()
@@ -41,14 +61,14 @@
     <h2>Шаги приготовления</h2>
     <h5>Добавить шаг</h5>
     <!--создание-->
-    <form id="formRecipeStep" asp-action="CreateRecipeStep" asp-controller="Administration" method="post" enctype="multipart/form-data">
+    <form id="formCreateRecipeStep" asp-action="CreateRecipeStep" asp-controller="Administration" method="post" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
         <input type="hidden" name="recipeId" value="@Model.RecipeID" />
         <div class="mb-3">
             <label class="form-label" for="file">Изображение</label><br />
             <input class="form-control" name="file" type="file" required />
         </div>
-        <span class="field-validation-valid" data-valmsg-for="file1" data-valmsg-replace="true"></span>
+        <span class="field-validation-valid" data-valmsg-for="file" data-valmsg-replace="true"></span>
 
         <div class="mb-3">
             <label class="form-label" for="Description">Описание</label><br />
@@ -56,36 +76,97 @@
         </div>
         <span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>
 
-        <input class="btn btn-primary" type="submit" value="Добавить" />
+        <input class="btn btn-primary" id="createstep" type="button" value="Добавить" />
     </form>
 </div>
 
+<div id="steps">
+</div>
 
-
-@foreach (var stepItem in @Model.reciepeSteps)
+@section Scripts
 {
-    <div class="m-1">
-        <img class="img-fluid img-thumbnail" src="@Url.Content(@stepItem.Img?.Path)" alt="@stepItem.Img?.Name" />
-    </div>
-    <!--РЕДАКТИРОВАНИЕ-->
-    <form id="formRecipeStep" asp-action="UpdateRecipeStep" asp-controller="Administration" method="post">
-        <div class="m-1">
-            <div>
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="ReciepeStepId" value="@stepItem.ReciepeStepID" />
-                <div class="mb-1">
-                    <textarea class="form-control" name="Description" required>@stepItem.Description</textarea>
-                </div>
-                <span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>
-            </div>
-            <input class="btn btn-primary btn-sm" type="submit" value="Сохранить" />
-        </div>
-    </form>
-    <!--УДАЛЕНИЕ-->
-    <form asp-action="DeleteRecipeStep" asp-controller="Administration" asp-route-id=@stepItem.ReciepeStepID>
-        @Html.AntiForgeryToken()
-        <div class="m-1">
-            <input class="btn btn-danger btn-sm mt-1 mb-1" type="submit" value="Удалить" />
-        </div>
-    </form>
+<script>
+    let myModal = new bootstrap.Modal(document.getElementById("infoModal"), {});
+
+    let UpdateSteps = function() {
+        $.ajax({
+            url: '@Url.Action("GetStepPartialView", "Administration")',
+            type: "get",
+            success: function (result) {
+                $('#steps').html(result);
+                //
+                $(".updatesteps").on('click', function() {
+                    let _url = '@Url.Action("UpdateRecipeStep", "Administration")';
+                    let formData = new FormData();
+                    let form = this.parentElement.parentElement;
+                    let formArr = $(form).serializeArray();
+                    formArr.forEach((element) => {formData.append(element.name, element.value)});
+                    $.ajax({
+                        url: _url,
+                        type: 'POST',
+                        contentType: false,
+                        processData: false,
+                        cache: false,
+                        data: formData,
+                        success: function(data) {
+                            UpdateSteps();
+                            $("#infoModalText").text("Изменения сохранены");
+                            myModal.show();
+                        }
+                    });
+                });
+                //
+                $('#createstep').click(function() {
+                    let _url = '@Url.Action("CreateRecipeStep", "Administration")';
+                    let formData = new FormData();
+                    let formArr = $('#formCreateRecipeStep').serializeArray();
+                    formArr.forEach((element) => {formData.append(element.name, element.value)});
+                    formData.append("file", document.getElementById("formCreateRecipeStep").file.files[0]);
+                    $.ajax({
+                        url: _url,
+                        type: 'POST',
+                        contentType: false,
+                        processData: false,
+                        cache: false,
+                        data: formData,
+                        success: function(data) {
+                            UpdateSteps();
+                            $("#infoModalText").text("Шаг создан");
+                            myModal.show();
+                        }
+                    });
+                });
+                //
+                $(".deletesteps").on('click', function() {
+                    let _url = '@Url.Action("DeleteRecipeStep", "Administration")';
+                    let formData = new FormData();
+                    let form = this.parentElement.parentElement;
+                    let formArr = $(form).serializeArray();
+                    formArr.forEach((element) => {formData.append(element.name, element.value)});
+                    $.ajax({
+                        url: _url,
+                        type: 'POST',
+                        contentType: false,
+                        processData: false,
+                        cache: false,
+                        data: formData,
+                        success: function(data) {
+                            UpdateSteps();
+                            $("#infoModalText").text("Шаг удалён");
+                            myModal.show();
+                        }
+                    });
+                });
+                //
+            },
+            error: function (xhr, status, error) {
+                var msg = "Response failed with status: " + status + "</br>"
+                + " Error: " + error;
+                $('#steps').html(msg);
+            }
+        });
+    }
+    UpdateSteps();
+</script>
 }
+

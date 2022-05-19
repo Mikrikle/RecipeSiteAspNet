@@ -7,7 +7,7 @@
 <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
     @foreach (Recipe recipe in Model)
     {
-        <a style="text-decoration: none;" asp-controller="Administration" asp-action="RecipeDetail" asp-route-id=@recipe.RecipeID>
+        <a style="text-decoration: none;" asp-controller="Home" asp-action="RecipeDetail" asp-route-id=@recipe.RecipeID>
             <div class="col">
                 <div class="card">
                     <div class="card-header">

@@ -11,6 +11,13 @@ namespace RecipeSiteAspNet.Controllers
 {
     public partial class AdministrationController : Controller
     {
+
+        [HttpGet]
+        public IActionResult GetStepPartialView()
+        {
+            return PartialView("_RecipeStepsForms", _db.ReciepeSteps.Include(s => s.Recipe).Include(s=>s.Img).ToList());
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
@@ -28,9 +35,9 @@ namespace RecipeSiteAspNet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public IActionResult DeleteRecipeStep(int id)
+        public IActionResult DeleteRecipeStep(int ReciepeStepId)
         {
-            ReciepeStep? rs = _db.ReciepeSteps.Include(s=>s.Recipe).Include(s=>s.Img).Single(s=>s.ReciepeStepID == id);
+            ReciepeStep? rs = _db.ReciepeSteps.Include(s=>s.Recipe).Include(s=>s.Img).Single(s=>s.ReciepeStepID == ReciepeStepId);
             if (rs == null)
                 return NotFound();
             // удаление изображения, если есть

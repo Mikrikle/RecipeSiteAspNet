@@ -38,32 +38,6 @@ namespace RecipeSiteAspNet.Controllers
             return View(recipe);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> RecipeDetail(int? id)
-        {
-            if (id == null)
-                return NotFound();
-            // Получение рецепта и всях связных моделей
-            Recipe? recipe = _db.Recipes.Include(r => r.Img).Include(r => r.Author)
-                .Single(r => r.RecipeID == id);
-            if (recipe == null)
-                return NotFound();
-            // получение шагов рцепты
-            List<ReciepeStep> steps = await _db.ReciepeSteps.Include(s => s.Recipe)
-                .Include(s => s.Img)
-                .Where(s => s.RecipeID == id)
-                .ToListAsync();
-            // создание модели представления
-            RecipeDetailModelView viewmodel = new RecipeDetailModelView
-            {
-                reciepeSteps = steps,
-                recipe = recipe
-            };
-            ViewBag.Categories = await _db.Categories.ToListAsync();
-
-            return View(viewmodel);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
