@@ -72,7 +72,8 @@ namespace RecipeSiteAspNet.Controllers
             rstep.Img = img;
             //
             _db.SaveChanges();
-            return RedirectToAction("RecipeDetail", "Administration", new { id = recipeId }, null);
+            return Ok();
+            //return RedirectToAction("RecipeDetail", "Home", new { id = recipeId }, null);
         }
     }
 }

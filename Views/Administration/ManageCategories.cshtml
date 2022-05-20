@@ -27,11 +27,11 @@
 </form>
 
 <div class="container">
-    <h5>Все категории</h5>
+    <h4>Все категории</h4>
     @foreach (Category c in ViewBag.Categories)
     {
-        <div class="m-1 p-2">
-            <p>@c.Name</p>
+        <div class="m-1 p-2 border">
+            <h5>@c.Name</h5>
             <p>@c.Description</p>
             <form asp-action="DeleteCategory" asp-controller="Administration" asp-route-id=@c.CategoryID>
                 @Html.AntiForgeryToken()

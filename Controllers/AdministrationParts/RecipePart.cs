@@ -57,7 +57,7 @@ namespace RecipeSiteAspNet.Controllers
             if (file != null)
                 UpdateRecipeImage(file, r);
             _db.SaveChanges();
-            return RedirectToAction("RecipeDetail", "Administration", new { id = id }, null);
+            return RedirectToAction("RecipeDetail", "Home", new { id = id }, null);
         }
 
         private void UpdateRecipeImage(IFormFile file, Recipe recipe)

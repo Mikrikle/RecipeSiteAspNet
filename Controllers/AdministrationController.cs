@@ -34,7 +34,8 @@ namespace RecipeSiteAspNet.Controllers
         
         private void DeleteRecipeStepFile(int recipeID, string filename)
         {
-            string path = Path.Combine(_appEnvironment.WebRootPath, $"Files\\Recipe{recipeID}\\Steps\\{filename}");
+            string path = filename.Replace('/', '\\')[1..];
+            path = Path.Combine(_appEnvironment.WebRootPath, path);
             if (System.IO.File.Exists(path))
                 System.IO.File.Delete(path);
         }
@@ -48,9 +49,9 @@ namespace RecipeSiteAspNet.Controllers
             }
         }
 
-        private void SaveFile(IFormFile file, string path)
+        private void SaveFile(IFormFile file, string filename)
         {
-            path = path.Replace('/', '\\')[1..];
+            string path = filename.Replace('/', '\\')[1..];
             path = Path.Combine(_appEnvironment.WebRootPath, path);
             string directoryName = Path.GetDirectoryName(path); 
             Directory.CreateDirectory(directoryName);

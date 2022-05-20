@@ -5,33 +5,38 @@
     ViewData["Title"] = "Add";
 }
 
+<div class="container-sm">
 @foreach (var stepItem in Model)
 {
-    <div class="row m-1">
-    <div class="col-sm">
-        <img class="img-fluid img-thumbnail" src="@Url.Content(@stepItem.Img?.Path)" alt="@stepItem.Img?.Name" />
-    </div>
-    <!--РЕДАКТИРОВАНИЕ-->
-    <form class="col-sm" class="formsUpdateRecipeStep" asp-action="UpdateRecipeStep" asp-controller="Administration" method="post">
-        <div class="m-1">
-            <div>
+<div class="card p-2 m-auto card-horizontal">
+    <div class="row g-0">
+        <div class="col-md-4 ml-3">
+            <img class="img-fluid rounded-start img-covered img-step-all" src="@Url.Content(@stepItem.Img?.Path)" alt="@stepItem.Img?.Name" />
+        </div>
+        <div class="col-md-8">
+            <!--РЕДАКТИРОВАНИЕ-->
+            <form class="formsUpdateRecipeStep" asp-action="UpdateRecipeStep" asp-controller="Administration" method="post">
+                <div class="px-2">
+                    <div>
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="ReciepeStepId" value="@stepItem.ReciepeStepID" />
+                        <div class="mb-1">
+                            <textarea class="form-control textarea-lg" name="Description" required>@stepItem.Description</textarea>
+                        </div>
+                        <span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>
+                    </div>
+                    <input class="btn btn-primary btn-sm updatesteps" type="button" value="Сохранить" />
+                    <input class="btn btn-danger btn-sm mt-1 mb-1 deletesteps" type="button" value="Удалить" />
+                </div>
+            </form>
+
+            <!--УДАЛЕНИЕ-->
+            <form class="formsDeleteRecipeStep" asp-action="DeleteRecipeStep" asp-controller="Administration" asp-route-id=@stepItem.ReciepeStepID>
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="ReciepeStepId" value="@stepItem.ReciepeStepID" />
-                <div class="mb-1">
-                    <textarea class="form-control form-control-lg" name="Description" required>@stepItem.Description</textarea>
-                </div>
-                <span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>
-            </div>
-            <input class="btn btn-primary btn-sm updatesteps" type="button" value="Сохранить" />
+            </form>
         </div>
-    </form>
-    <!--УДАЛЕНИЕ-->
-    <form class="col-sm" class="formsDeleteRecipeStep" asp-action="DeleteRecipeStep" asp-controller="Administration" asp-route-id=@stepItem.ReciepeStepID>
-        @Html.AntiForgeryToken()
-        <input type="hidden" name="ReciepeStepId" value="@stepItem.ReciepeStepID" />
-        <div class="m-1">
-            <input class="btn btn-danger btn-sm mt-1 mb-1 deletesteps" type="button" value="Удалить" />
-        </div>
-    </form>
     </div>
+</div>
 }
+</div>
