@@ -1,0 +1,25 @@
+﻿@model RecipeSiteAspNet.Models.ReciepeStep;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="mx-auto container card m-2 p-3">
+    <h2>Шаги приготовления</h2>
+    <h5>Добавить шаг</h5>
+    <!--создание-->
+    <form id="formCreateRecipeStep" asp-action="CreateRecipeStep" asp-controller="Administration" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="recipeId" value="@Model.RecipeID" />
+        <div class="mb-3">
+            <label class="form-label" for="file">Изображение</label><br />
+            <input class="form-control" name="file" type="file" required />
+        </div>
+        <span class="field-validation-valid" data-valmsg-for="file" data-valmsg-replace="true"></span>
+
+        <div class="mb-3">
+            <label class="form-label" asp-for="Description">Описание</label><br />
+            <textarea class="form-control textarea-lg" asp-for="Description"> </textarea>
+            <span asp-validation-for="Description" />
+        </div>
+
+        <input class="btn btn-primary" id="createstep" type="button" value="Добавить" />
+    </form>
+</div>

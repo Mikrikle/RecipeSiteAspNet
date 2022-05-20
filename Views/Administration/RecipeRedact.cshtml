@@ -1,6 +1,7 @@
 ﻿@model RecipeSiteAspNet.Models.Recipe;
 @using Microsoft.AspNetCore.Identity;
 @using RecipeSiteAspNet.Areas.Identity.Data;
+@using RecipeSiteAspNet.Models;
 @inject UserManager<RecipeSiteUser> UserManager
 
 
@@ -83,28 +84,7 @@
 </div>
 
 <!--ШАГИ-->
-<div class="mx-auto container card m-2 p-3">
-    <h2>Шаги приготовления</h2>
-    <h5>Добавить шаг</h5>
-    <!--создание-->
-    <form id="formCreateRecipeStep" asp-action="CreateRecipeStep" asp-controller="Administration" method="post" enctype="multipart/form-data">
-        @Html.AntiForgeryToken()
-        <input type="hidden" name="recipeId" value="@Model.RecipeID" />
-        <div class="mb-3">
-            <label class="form-label" for="file">Изображение</label><br />
-            <input class="form-control" name="file" type="file" required />
-        </div>
-        <span class="field-validation-valid" data-valmsg-for="file" data-valmsg-replace="true"></span>
-
-        <div class="mb-3">
-            <label class="form-label" for="Description">Описание</label><br />
-            <textarea class="form-control textarea-lg" name="Description" id="Description" required></textarea>
-        </div>
-        <span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true" data-val="true"></span>
-
-        <input class="btn btn-primary" id="createstep" type="button" value="Добавить" />
-    </form>
-</div>
+@await Html.PartialAsync("_RecipeStepCreateForm.cshtml", new ReciepeStep{RecipeID=@Model.RecipeID} )
 
 <div id="steps">
 </div>
@@ -121,20 +101,23 @@
             let _url = '@Url.Action("DeleteRecipeStep", "Administration")';
             let formData = new FormData();
             let form = item.parentNode.parentNode.parentNode.getElementsByClassName("formsDeleteRecipeStep")[0]
-            let formArr = $(form).serializeArray();
-            formArr.forEach((element) => {formData.append(element.name, element.value)});
-            $.ajax({
-                url: _url,
-                type: 'POST',
-                contentType: false,
-                processData: false,
-                cache: false,
-                data: formData,
-                success: function(data) {
-                    UpdateSteps();
-                }
-            });
-            DeleteYesNoModal.hide();
+            let IsValid = $(form).valid();
+            if(IsValid){
+                let formArr = $(form).serializeArray();
+                formArr.forEach((element) => {formData.append(element.name, element.value)});
+                $.ajax({
+                    url: _url,
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data: formData,
+                    success: function(data) {
+                        UpdateSteps();
+                    }
+                });
+                DeleteYesNoModal.hide();
+            }
         });
         $("#btnNoConfirmYesNo").click(function () {
             DeleteYesNoModal.hide();
@@ -152,42 +135,49 @@
                     let _url = '@Url.Action("UpdateRecipeStep", "Administration")';
                     let formData = new FormData();
                     let form = this.parentElement.parentElement;
-                    let formArr = $(form).serializeArray();
-                    formArr.forEach((element) => {formData.append(element.name, element.value)});
-                    $.ajax({
-                        url: _url,
-                        type: 'POST',
-                        contentType: false,
-                        processData: false,
-                        cache: false,
-                        data: formData,
-                        success: function(data) {
-                            UpdateSteps();
-                            $("#infoModalText").text("Изменения сохранены");
-                            InfoModal.show();
-                        }
-                    });
+                    let IsValid = $(form).valid();
+                    if(IsValid) {
+                        let formArr = $(form).serializeArray();
+                        formArr.forEach((element) => {formData.append(element.name, element.value)});
+                        $.ajax({
+                            url: _url,
+                            type: 'POST',
+                            contentType: false,
+                            processData: false,
+                            cache: false,
+                            data: formData,
+                            success: function(data) {
+                                UpdateSteps();
+                                $("#infoModalText").text("Изменения сохранены");
+                                InfoModal.show();
+                            }
+                        });
+                    }
                 });
                 //
                 $('#createstep').click(function() {
                     let _url = '@Url.Action("CreateRecipeStep", "Administration")';
                     let formData = new FormData();
                     let formArr = $('#formCreateRecipeStep').serializeArray();
-                    formArr.forEach((element) => {formData.append(element.name, element.value)});
-                    formData.append("file", document.getElementById("formCreateRecipeStep").file.files[0]);
-                    $.ajax({
-                        url: _url,
-                        type: 'POST',
-                        contentType: false,
-                        processData: false,
-                        cache: false,
-                        data: formData,
-                        success: function(data) {
-                            UpdateSteps();
-                            $("#infoModalText").text("Шаг создан");
-                            InfoModal.show();
-                        }
-                    });
+                    let form =  document.getElementById("formCreateRecipeStep");
+                    let IsValid = $(form).valid();
+                    if(IsValid) {
+                        formArr.forEach((element) => {formData.append(element.name, element.value)});
+                        formData.append("file", form.file.files[0]);
+                        $.ajax({
+                            url: _url,
+                            type: 'POST',
+                            contentType: false,
+                            processData: false,
+                            cache: false,
+                            data: formData,
+                            success: function(data) {
+                                UpdateSteps();
+                                $("#infoModalText").text("Шаг создан");
+                                InfoModal.show();
+                            }
+                        });
+                    }
                 });
                 //
                 $(".deletesteps").on('click', function() {

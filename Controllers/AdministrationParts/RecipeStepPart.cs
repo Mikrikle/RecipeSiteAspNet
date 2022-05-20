@@ -24,7 +24,7 @@ namespace RecipeSiteAspNet.Controllers
         public IActionResult UpdateRecipeStep(int ReciepeStepId, string Description)
         {
             ReciepeStep? rs = _db.ReciepeSteps.Find(ReciepeStepId);
-            if (rs == null)
+            if (rs == null || Description.Length < 1)
                 return NotFound();
             rs.Description = Description;
             //
