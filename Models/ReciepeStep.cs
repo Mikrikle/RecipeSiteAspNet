@@ -8,12 +8,12 @@ namespace RecipeSiteAspNet.Models
     {
         public int ReciepeStepID { get; set; }
 
-        public string Description { get; set; }
+        public string Description { get; set; } = null!;
 
         [BindNever]
         public int RecipeID { get; set; }
         [BindNever]
-        public virtual Recipe Recipe { get; set; }
+        public virtual Recipe Recipe { get; set; } = null!;
 
         [BindNever]
         public int? ImgID { get; set; }

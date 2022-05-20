@@ -53,11 +53,14 @@ namespace RecipeSiteAspNet.Controllers
         {
             string path = filename.Replace('/', '\\')[1..];
             path = Path.Combine(_appEnvironment.WebRootPath, path);
-            string directoryName = Path.GetDirectoryName(path); 
-            Directory.CreateDirectory(directoryName);
-            using (var output = new FileStream(path, FileMode.Create))
+            string? directoryName = Path.GetDirectoryName(path);
+            if (directoryName != null)
             {
-                file.CopyTo(output);
+                Directory.CreateDirectory(directoryName);
+                using (var output = new FileStream(path, FileMode.Create))
+                {
+                    file.CopyTo(output);
+                }
             }
         }
     }

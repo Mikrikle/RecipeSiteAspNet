@@ -7,7 +7,7 @@ namespace RecipeSiteAspNet.Models
     {
         [Key]
         public int ImgID { get; set; }
-        public string Name { get; set; }
-        public string Path { get; set; }
+        public string Name { get; set; } = null!;
+        public string Path { get; set; } = null!;
     }
 }

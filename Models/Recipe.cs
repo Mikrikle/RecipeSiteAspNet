@@ -12,16 +12,16 @@ namespace RecipeSiteAspNet.Models
         [BindNever]
         public DateTime CreatedDate { get; set; }
 
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Ingredients { get; set; }
+        public string Name { get; set; } = null!;
+        public string Description { get; set; } = null!;
+        public string Ingredients { get; set; } = null!;
         public int CookingTimeMinutes { get; set; }
         public int nServings { get; set; }
 
         public List<ReciepeStep> reciepeSteps { get; set; } = new();
 
 
-        public string RecipeSiteUserID { get; set; }
+        public string RecipeSiteUserID { get; set; } = null!;
         [BindNever]
         [ForeignKey("RecipeSiteUserID")]
         public RecipeSiteUser? Author { get; set; }

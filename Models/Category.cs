@@ -7,8 +7,8 @@ namespace RecipeSiteAspNet.Models
     {
         public int CategoryID { get; set; }
 
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; } = null!;
+        public string Description { get; set; } = null!;
         public virtual List<Recipe> Recipes { get; set; } = new List<Recipe>();
     }
 }
