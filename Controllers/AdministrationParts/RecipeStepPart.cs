@@ -56,7 +56,7 @@ namespace RecipeSiteAspNet.Controllers
         {
             // получение записи о рецете
             Recipe? recipe = _db.Recipes.Find(recipeId);
-            if (recipe == null)
+            if (recipe == null || file==null || rstep.Description.Length < 1)
                 return NotFound();
             // запись шага рецепта в базу данных
             _db.ReciepeSteps.Add(rstep);

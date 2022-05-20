@@ -8,6 +8,7 @@ namespace RecipeSiteAspNet.Models
     {
         public int ReciepeStepID { get; set; }
 
+        [MinLength(1)]
         public string Description { get; set; } = null!;
 
         [BindNever]

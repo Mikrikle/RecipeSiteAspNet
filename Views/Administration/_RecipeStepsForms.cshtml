@@ -21,7 +21,8 @@
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="ReciepeStepId" value="@stepItem.ReciepeStepID" />
                         <div class="mb-1">
-                            <textarea class="form-control textarea-lg" name="Description" required>@stepItem.Description</textarea>
+                            <textarea class="form-control textarea-lg" asp-for="@stepItem.Description" required>@stepItem.Description</textarea>
+                            <span asp-validation-for="@stepItem.Description" />
                         </div>
                         <span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>
                     </div>
