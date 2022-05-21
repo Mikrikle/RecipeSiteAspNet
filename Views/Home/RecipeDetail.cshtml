@@ -15,13 +15,13 @@
     <div class="card">
         <h5 class="card-header">Время приготовления: @Model.recipe.CookingTimeMinutes минут(ы)</h5>
         <div class="card-body">
-            <div class="d-flex justify-content-right">
+            <div class="d-flex flex-row flex-fill">
                 <div class="m-3">
-                    <img class="rounded img-covered" src="@Url.Content(@Model.recipe.Img?.Path)" alt="@Model.recipe.Img?.Name" />
+                    <img class="img-sm rounded img-covered" src="@Url.Content(@Model.recipe.Img?.Path)" alt="@Model.recipe.Img?.Name" />
                 </div>
                 <div>
                     <h5 class="card-title">@Model.recipe.Name</h5>
-                    <p class="card-text text-wrap">@Model.recipe.Description</p>
+                    <p class="d-inline-block card-text text-wrap text-truncate card-text">@Model.recipe.Description</p>
                 </div>
             </div>
         </div>

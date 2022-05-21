@@ -18,7 +18,7 @@
 <!-- Модальное окно -->
 <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="alert alert-success d-flex align-items-center">
+        <div class="modal-content">
             <div class="modal-body d-flex align-items-center">
                 <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
                 <p class="h5" id="infoModalText"></p>
@@ -95,92 +95,92 @@
     let InfoModal = new bootstrap.Modal(document.getElementById("infoModal"), {});
     let DeleteYesNoModal = new bootstrap.Modal(document.getElementById("deleteYesNoModal"), {});
 
+    let AjaxSendForm = function(formItem, formData, _url, onSuccess) {
+        let IsValid = $(formItem).valid();
+        if(IsValid) {
+            $.ajax({
+                url: _url,
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                cache: false,
+                data: formData,
+                success: function(data) {
+                    onSuccess();
+                    UpdateSteps();
+                }
+            });
+        }
+    }
+
+    $('#createstep').click(function() {
+        // Создание шага
+        let _url = '@Url.Action("CreateRecipeStep", "Administration")';
+        let formData = new FormData();
+        let formArr = $('#formCreateRecipeStep').serializeArray();
+        let form =  document.getElementById("formCreateRecipeStep");
+        formArr.forEach((element) => {formData.append(element.name, element.value)});
+        formData.append("file", form.file.files[0]);
+        AjaxSendForm(form,
+            formData,
+            _url,
+            function(){
+                document.getElementById("formCreateRecipeStep").reset();
+                $("#infoModalText").text("Шаг создан");
+                InfoModal.show();
+            } 
+        );
+    });
+
     function ConfirmYesNo(item) {
+        // УДАЛЕНИЕ
         DeleteYesNoModal.show();
         $("#btnYesConfirmYesNo").click(function () {
+            // Подтверждение удаления
             let _url = '@Url.Action("DeleteRecipeStep", "Administration")';
-            let formData = new FormData();
             let form = item.parentNode.parentNode.parentNode.getElementsByClassName("formsDeleteRecipeStep")[0]
-            let IsValid = $(form).valid();
-            if(IsValid){
-                let formArr = $(form).serializeArray();
-                formArr.forEach((element) => {formData.append(element.name, element.value)});
-                $.ajax({
-                    url: _url,
-                    type: 'POST',
-                    contentType: false,
-                    processData: false,
-                    cache: false,
-                    data: formData,
-                    success: function(data) {
-                        UpdateSteps();
-                    }
-                });
-                DeleteYesNoModal.hide();
-            }
+            let formArr = $(form).serializeArray();
+            let formData = new FormData();
+            formArr.forEach((element) => {formData.append(element.name, element.value)});
+            AjaxSendForm(form, formData, _url, function(){DeleteYesNoModal.hide();} );
         });
         $("#btnNoConfirmYesNo").click(function () {
+            // Отмена удаления
             DeleteYesNoModal.hide();
         });
     }
 
     let UpdateSteps = function() {
+        // Создание форм и функций для каждого шага
         $.ajax({
+            // Получение списка шагов
             url: '@Url.Action("GetStepPartialView", "Administration")',
             type: "get",
+            data: {'recipeId' : '@Model.RecipeID'},
             success: function (result) {
+                // Вставка шагов на страницу
                 $('#steps').html(result);
-                //
+                // Привязка событий к созданым шагам
                 $(".updatesteps").on('click', function() {
+                    // Обновление информации о шаге
                     let _url = '@Url.Action("UpdateRecipeStep", "Administration")';
                     let formData = new FormData();
                     let form = this.parentElement.parentElement;
-                    let IsValid = $(form).valid();
-                    if(IsValid) {
-                        let formArr = $(form).serializeArray();
-                        formArr.forEach((element) => {formData.append(element.name, element.value)});
-                        $.ajax({
-                            url: _url,
-                            type: 'POST',
-                            contentType: false,
-                            processData: false,
-                            cache: false,
-                            data: formData,
-                            success: function(data) {
-                                UpdateSteps();
-                                $("#infoModalText").text("Изменения сохранены");
-                                InfoModal.show();
-                            }
-                        });
-                    }
-                });
-                //
-                $('#createstep').click(function() {
-                    let _url = '@Url.Action("CreateRecipeStep", "Administration")';
-                    let formData = new FormData();
-                    let formArr = $('#formCreateRecipeStep').serializeArray();
-                    let form =  document.getElementById("formCreateRecipeStep");
-                    let IsValid = $(form).valid();
-                    if(IsValid) {
-                        formArr.forEach((element) => {formData.append(element.name, element.value)});
-                        formData.append("file", form.file.files[0]);
-                        $.ajax({
-                            url: _url,
-                            type: 'POST',
-                            contentType: false,
-                            processData: false,
-                            cache: false,
-                            data: formData,
-                            success: function(data) {
-                                UpdateSteps();
-                                $("#infoModalText").text("Шаг создан");
-                                InfoModal.show();
-                            }
-                        });
-                    }
+                    let formArr = $(form).serializeArray();
+                    formArr.forEach((element) => {formData.append(element.name, element.value)});
+                    AjaxSendForm(form,
+                        formData,
+                        _url,
+                        function(){
+                            $("#infoModalText").text("Изменения сохранены");
+                            InfoModal.show();
+                        } 
+                    );
+                    
                 });
                 //
                 $(".deletesteps").on('click', function() {
+                    // Удаление шага
                     ConfirmYesNo(this);
                 });
                 //

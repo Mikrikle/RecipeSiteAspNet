@@ -13,9 +13,13 @@ namespace RecipeSiteAspNet.Controllers
     {
 
         [HttpGet]
-        public IActionResult GetStepPartialView()
+        public IActionResult GetStepPartialView(int recipeId)
         {
-            return PartialView("_RecipeStepsForms", _db.ReciepeSteps.Include(s => s.Recipe).Include(s=>s.Img).ToList());
+            return PartialView("_RecipeStepsForms", _db.ReciepeSteps
+                .Include(s => s.Recipe).Include(s=>s.Img)
+                .Where(s=>s.RecipeID == recipeId)
+                .ToList()
+                );
         }
 
         [HttpPost]
@@ -37,7 +41,8 @@ namespace RecipeSiteAspNet.Controllers
         [Authorize]
         public IActionResult DeleteRecipeStep(int ReciepeStepId)
         {
-            ReciepeStep? rs = _db.ReciepeSteps.Include(s=>s.Recipe).Include(s=>s.Img).Single(s=>s.ReciepeStepID == ReciepeStepId);
+            IQueryable<ReciepeStep>? rsq = _db.ReciepeSteps.Include(s => s.Recipe).Include(s => s.Img);
+            ReciepeStep? rs = rsq.FirstOrDefault(s => s.ReciepeStepID == ReciepeStepId);
             if (rs == null)
                 return NotFound();
             // удаление изображения, если есть

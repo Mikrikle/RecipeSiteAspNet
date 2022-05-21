@@ -97,7 +97,7 @@ namespace RecipeSiteAspNet.Controllers
                 recipe.Img = img;
                 //
                 _db.SaveChanges();
-                return RedirectToAction("RecipeDetail", "Administration", new { id = recipe.RecipeID }, null);
+                return RedirectToAction("RecipeDetail", "Home", new { id = recipe.RecipeID }, null);
             }
             return NotFound();
         }
