@@ -1,34 +1,36 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
+/* Images */
 .img-covered {
     object-fit: cover;
     width: 100%;
     height: 100%;
 }
-.img-sm{
-    max-width:400px;
-    max-height:400px;
+
+.img-max400 {
+    max-width: 400px;
+    max-height: 400px;
 }
 
-.img-step-all{
-    max-width:100%;
+.img-max300 {
+    max-width: 300px;
     max-height: 300px;
 }
 
@@ -37,12 +39,18 @@ body {
 }
 
 .div-right {
-    text-align:right;
+    text-align: right;
 }
 
 .card-horizontal {
     max-width: 720px;
 }
+
+.h-min100
+{
+    height: 100px
+}
+
 .card-text {
     max-height: 150px;
     max-width: 720px;

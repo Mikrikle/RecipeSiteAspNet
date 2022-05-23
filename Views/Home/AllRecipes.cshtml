@@ -10,16 +10,16 @@
         <a style="text-decoration: none;" asp-controller="Home" asp-action="RecipeDetail" asp-route-id=@recipe.RecipeID>
             <div class="col">
                 <div class="card">
-                    <div class="card-header">
-                        @recipe.Category?.Name
+                    <div class="card-header bg-mainorange text-black h5">
+                        @recipe.Name
                     </div>
                     <img src="@Url.Content(@recipe.Img?.Path)" class="card-img-top img-thumbnail img-covered" alt="@recipe.Img?.Name">
-                    <div class="card-body">
-                        <h5 class="card-title text-truncate">@recipe.Name</h5>
-                        <p class="card-text text-truncate">@recipe.Description</p>
+                    <div class="p-3">
+                        <div class="card-text h-min100 text-truncate text-black text-wrap">@recipe.Description</div>
                     </div>
                     <div class="card-footer">
-                        <small class="text-muted">Время приготовления: @recipe.CookingTimeMinutes минут(ы)</small>
+                        <p>@recipe.Category?.Name</p>
+                        <small class="text-muted text-black">Время приготовления: @recipe.CookingTimeMinutes минут(ы)</small>
                     </div>
                 </div>
             </div>

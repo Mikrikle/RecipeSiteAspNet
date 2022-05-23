@@ -6,33 +6,33 @@
 }
 
 
-<div class="m-auto mb-3 p-3 div-right">
+<div class="mx-auto my-3 div-right">
     <a class="btn btn-primary" asp-controller="Administration" asp-action="RecipeRedact" asp-route-id="@Model.recipe.RecipeID">Редактировать</a>
 </div>
 
 
 <div class="mx-auto container m-1 p-1">
     <div class="card">
-        <h5 class="card-header">Время приготовления: @Model.recipe.CookingTimeMinutes минут(ы)</h5>
+        <h5 class="card-header bg-mainorange">@Model.recipe.Name</h5>
         <div class="card-body">
             <div class="d-flex flex-row flex-fill">
                 <div class="m-3">
-                    <img class="img-sm rounded img-covered" src="@Url.Content(@Model.recipe.Img?.Path)" alt="@Model.recipe.Img?.Name" />
+                    <img class="img-max400 rounded img-covered" src="@Url.Content(@Model.recipe.Img?.Path)" alt="@Model.recipe.Img?.Name" />
                 </div>
                 <div>
-                    <h5 class="card-title">@Model.recipe.Name</h5>
                     <p class="d-inline-block card-text text-wrap text-truncate card-text">@Model.recipe.Description</p>
                 </div>
             </div>
         </div>
         <div class="card-footer">
+            <p>Время приготовления: @Model.recipe.CookingTimeMinutes минут(ы)</p>
         </div>
     </div>
 </div>
 
 
-<div class="mx-auto conteiner-fluid m-2 p-2">
-    <h5>Шаги</h5>
+<div class="mx-auto conteiner-fluid mt-5 p-2">
+    <h5 class="h4">Приготовление блюда по шагам</h5><hr />
     <!--Шаги рецепта-->
     @foreach (var stepItem in @Model.reciepeSteps)
     {
@@ -40,7 +40,7 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <img class="img-fluid img-covered img-step-all" src="@Url.Content(@stepItem.Img?.Path)" alt="@stepItem.Img?.Name" />
+                    <img class="img-fluid rounded img-covered img-step-all" src="@Url.Content(@stepItem.Img?.Path)" alt="@stepItem.Img?.Name" />
                 </div>
                 <div class="col-md-6">
                     <p class="card-text text-wrap">@stepItem.Description</p>

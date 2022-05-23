@@ -44,14 +44,14 @@
 
 
 
-<div class="m-auto mb-3 p-3 div-right">
+<div class="mx-auto my-3 div-right">
     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRedactor" aria-expanded="false" aria-controls="collapseExample">
         Показать редактор рецепта
     </button>
     <a class="btn btn-primary" asp-controller="Home" asp-action="RecipeDetail" asp-route-id="@Model.RecipeID">Назад</a>
 </div>
 
-<div class="collapse mx-auto container card p-3 m-1" id="collapseRedactor">
+<div class="collapse mx-auto container card p-3 mb-5" id="collapseRedactor">
     <!--Редактирование-->
     <form id="formRecipe" method="post" asp-action="UpdateRecipe" asp-controller="Administration" asp-route-id=@Model.RecipeID enctype="multipart/form-data">
         @Html.AntiForgeryToken()
@@ -60,7 +60,7 @@
         <!--Загрузка изображений-->
         <h5>Редкатирование изображения</h5>
         <div class="m-3">
-            <img class="img-covered img-sm" src="@Url.Content(@Model.Img?.Path)" alt="@Model.Img?.Name" />
+            <img class="img-covered img-max400" src="@Url.Content(@Model.Img?.Path)" alt="@Model.Img?.Name" />
         </div>
         <div class="mb-3">
             <input class="form-control" name="file" type="file" />
