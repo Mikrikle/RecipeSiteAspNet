@@ -45,7 +45,7 @@
 
 
 <div class="mx-auto my-3 div-right">
-    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRedactor" aria-expanded="false" aria-controls="collapseExample">
+    <button id="recipeRedactorBtn" class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRedactor" aria-expanded="false" aria-controls="collapseExample">
         Показать редактор рецепта
     </button>
     <a class="btn btn-primary" asp-controller="Home" asp-action="RecipeDetail" asp-route-id="@Model.RecipeID">Назад</a>
@@ -92,6 +92,18 @@
 @section Scripts
 {
 <script>
+
+    $("#recipeRedactorBtn").click(function(){
+        if( this.innerText === "Показать редактор рецепта")
+        {
+            this.innerText = "Скрыть редактор рецепта";
+        }
+        else
+        {
+            this.innerText = "Показать редактор рецепта";
+        }
+    });
+    
     let InfoModal = new bootstrap.Modal(document.getElementById("infoModal"), {});
     let DeleteYesNoModal = new bootstrap.Modal(document.getElementById("deleteYesNoModal"), {});
 

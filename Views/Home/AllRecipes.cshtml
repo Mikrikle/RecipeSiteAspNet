@@ -7,23 +7,23 @@
 <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
     @foreach (Recipe recipe in Model)
     {
-        <a style="text-decoration: none;" asp-controller="Home" asp-action="RecipeDetail" asp-route-id=@recipe.RecipeID>
-            <div class="col">
-                <div class="card">
-                    <div class="card-header bg-mainorange text-black h5">
+
+        <div class="col">
+            <div class="card">
+                <a style="text-decoration: none;" asp-controller="Home" asp-action="RecipeDetail" asp-route-id=@recipe.RecipeID>
+                    <p class="card-header bg-mainorange text-black card-name fw-weight-bold fs-5">
                         @recipe.Name
-                    </div>
+                    </p>
                     <img src="@Url.Content(@recipe.Img?.Path)" class="card-img-top img-thumbnail img-covered" alt="@recipe.Img?.Name">
                     <div class="p-3">
                         <div class="card-text h-min100 text-truncate text-black text-wrap">@recipe.Description</div>
                     </div>
-                    <div class="card-footer">
-                        <p>@recipe.Category?.Name</p>
-                        <small class="text-muted text-black">Время приготовления: @recipe.CookingTimeMinutes минут(ы)</small>
-                    </div>
+                </a>
+                <div class="card-footer">
+                    <a class="link-dark" asp-controller="Administration" asp-action="ManageCategories"><p>@recipe.Category?.Name</p></a>
+                    <small class="text-muted text-black">Время приготовления: @recipe.CookingTimeMinutes минут(ы)</small>
                 </div>
             </div>
-        </a>
-
+        </div>
     }
 </div>

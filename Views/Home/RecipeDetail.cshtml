@@ -15,6 +15,10 @@
     <div class="card">
         <h5 class="card-header bg-mainorange">@Model.recipe.Name</h5>
         <div class="card-body">
+            <div>
+                <a class="link-dark text-decoration-none" asp-controller="Administration" asp-action="ManageCategories"><p>@Model.recipe.Category?.Name</p></a>
+                <hr />
+            </div>
             <div class="d-flex flex-row flex-fill">
                 <div class="m-3">
                     <img class="img-max400 rounded img-covered" src="@Url.Content(@Model.recipe.Img?.Path)" alt="@Model.recipe.Img?.Name" />
@@ -26,6 +30,17 @@
         </div>
         <div class="card-footer">
             <p>Время приготовления: @Model.recipe.CookingTimeMinutes минут(ы)</p>
+            <table class="table table-striped">
+                <thead>
+                    <tr><th>Ингредиенты</th></tr>
+                </thead>
+                <tbody>
+                @foreach(string line in @Model.recipe.Ingredients.Split('\n'))
+                {
+                    <tr><td>@line</td></tr>
+                }
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

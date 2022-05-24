@@ -21,7 +21,7 @@ namespace RecipeSiteAspNet.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View("AllRecipes", _db.Recipes.Include(r => r.Img).Include(r => r.Category).ToList());
         }
 
         public IActionResult AllRecipes()

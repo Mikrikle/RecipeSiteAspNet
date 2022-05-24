@@ -55,3 +55,6 @@ body {
     max-height: 150px;
     max-width: 720px;
 }
+.card-name{
+    height: 70px;
+}
