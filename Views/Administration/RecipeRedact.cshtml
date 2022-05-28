@@ -4,6 +4,10 @@
 @using RecipeSiteAspNet.Models;
 @inject UserManager<RecipeSiteUser> UserManager
 
+@{
+    ViewData["Title"] = "Редкатирование рецепта";
+    ViewData["Description"] = "Редкатирование рецепта";
+}
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -48,7 +52,7 @@
     <button id="recipeRedactorBtn" class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRedactor" aria-expanded="false" aria-controls="collapseExample">
         Показать редактор рецепта
     </button>
-    <a class="btn btn-primary" asp-controller="Home" asp-action="RecipeDetail" asp-route-id="@Model.RecipeID">Назад</a>
+    <a class="btn btn-primary" href='javascript:history.go(-1)'>Назад</a>
 </div>
 
 <div class="collapse mx-auto container card p-3 mb-5" id="collapseRedactor">

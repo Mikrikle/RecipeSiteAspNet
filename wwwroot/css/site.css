@@ -24,6 +24,11 @@ body {
     height: 100%;
 }
 
+.img-min300 {
+    min-width: 300px;
+    min-height: 300px
+}
+
 .img-max400 {
     max-width: 400px;
     max-height: 400px;
@@ -46,15 +51,23 @@ body {
     max-width: 720px;
 }
 
-.h-min100
-{
+.h-min100 {
     height: 100px
 }
 
 .card-text {
-    max-height: 150px;
     max-width: 720px;
 }
-.card-name{
+
+.card-name {
     height: 70px;
+}
+
+/* sorting  */
+.stateInput {
+    display: none;
+}
+.arrows {
+    width: 40px;
+    text-align:center;
 }

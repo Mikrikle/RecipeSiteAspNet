@@ -13,6 +13,34 @@ namespace RecipeSiteAspNet.Controllers
     public partial class AdministrationController : Controller
     {
         [HttpGet]
+        public async Task<IActionResult> ManageRecipes(string name, int? categoryId, int? sortOrderCookTime)
+        {
+            ViewBag.Categories = await _db.Categories.ToListAsync();
+            IQueryable<Recipe> recipes = _db.Recipes
+                .Include(r => r.Category)
+                .Include(r => r.Img)
+                .Include(r => r.Author);
+            if (!String.IsNullOrEmpty(name))
+            {
+                recipes = recipes.Where(r => r.Name.Contains(name));
+            }
+            if (categoryId != null)
+            {
+                recipes = recipes.Where(r => r.CategoryID == categoryId);
+            }
+            switch(sortOrderCookTime)
+            {
+                case 0: break;
+                case -1: recipes = recipes.OrderByDescending(r => r.CookingTimeMinutes);  break;
+                case 1: recipes = recipes.OrderBy(r => r.CookingTimeMinutes);  break;
+            }
+
+            return View(await recipes.ToListAsync());
+        }
+
+
+
+        [HttpGet]
         public async Task<IActionResult> CreateRecipe()
         {
             ViewBag.Categories = await _db.Categories.ToListAsync();

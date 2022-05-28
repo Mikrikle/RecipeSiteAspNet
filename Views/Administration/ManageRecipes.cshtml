@@ -1,0 +1,140 @@
+﻿@model IEnumerable<RecipeSiteAspNet.Models.Recipe>;
+@using Microsoft.AspNetCore.Identity;
+@using RecipeSiteAspNet.Areas.Identity.Data;
+@using RecipeSiteAspNet.Models;
+@inject UserManager<RecipeSiteUser> UserManager
+
+
+@{
+    ViewData["Title"] = "Управление рецептами";
+    ViewData["Description"] = "Управление рецептами";
+}
+
+<h3 class="pt-5 m-3">Управление рецептами</h3>
+
+<div class="mx-auto my-3 div-right">
+    <a class="btn btn-primary" asp-action="CreateRecipe">Добавить рецепт</a>
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <form method="GET" id="FilterForm">
+        <tr class="table-dark">
+            <th class="text-light">
+                Фильтры
+            </th>
+            <th>
+                <input class="form-control" name="name" type="text" id="filterName" placeholder="Название" />
+            </th>
+            <th>
+                <select class="form-select" name="categoryId" id="filterCategory">
+                    <option value="" selected>Все категории</option>
+                        @foreach (Category c in ViewBag.Categories)
+                        {
+                        <option value="@c.CategoryID">@c.Name</option>
+                        }
+                </select>
+            </th>
+            <th>
+
+            </th>
+            <th>
+                <input class="btn btn-primary" form="FilterForm" type="submit" value="Применить" />
+                <input class="btn btn-secondary" form="FilterForm" type="reset" value="Очистить" />
+            </th>
+        </tr>
+        </form>
+
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Название</th>
+            <th scope="col">Категория</th>
+            <th scope="col">
+                Время приготовления
+                <input name="sortOrderCookTime" form="FilterForm" type="number" class="stateInput" id="sortOrderCookTime" value="0">
+                <span class="arrows btn btn-outline-primary">&#8661;</span>
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Recipe r in Model)
+        {
+            <tr>
+                <th><a class="btn btn-outline-primary" asp-controller="Home" asp-action="RecipeDetail" asp-route-id=@r.RecipeID>@r.RecipeID</a></th>
+                <td>@r.Name</td>
+                <td>@r.Category?.Name</td>
+                <td>@r.CookingTimeMinutes (мин)</td>
+                <td>
+                    <a class="btn btn-primary " asp-action="RecipeRedact" asp-route-id=@r.RecipeID>Редактировать</a>
+                    <form class="d-inline" asp-action="DeleteRecipe" asp-route-id=@r.RecipeID>
+                        @Html.AntiForgeryToken()
+                        <input class="btn btn-danger" type="submit" value="Удалить" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts
+{
+<script>
+
+
+
+    let url_string = window.location.href
+    let url = new URL(url_string);
+    let c = url.searchParams.get("categoryId");
+    if(c != null &&  c.length > 0)
+    {
+        document.getElementById('filterCategory').value=Number(c);
+    }
+    let n = url.searchParams.get("name");
+    document.getElementById('filterName').value = n;
+    let sortOrderCookTime = url.searchParams.get("sortOrderCookTime");
+    setTristateValue(document.getElementById('sortOrderCookTime'), sortOrderCookTime)
+
+    function setTristateValue(input, value) {
+        if(value) {
+            input.value = value;
+            input.parentElement.getElementsByTagName("span")[0].innerHTML = getTristateStr(value);
+        }
+    }
+
+
+    $('.arrows').on('click', function() {
+        tristate(this, this.parentElement.getElementsByTagName("input")[0]);
+        $("#FilterForm").submit();
+    });
+
+    function getTristateStr(value)
+    {
+        switch (value) {
+            case "1":
+                return '&#9650;';
+            case "-1":
+               return '&#9660;';
+            case "0":
+                return '&#8661;';
+        }
+    }
+
+    function tristate(label, input) {
+        switch (input.value) {
+            case "0":
+                input.value = "1";
+                label.innerHTML  = '&#9650;';
+                break;
+            case "1":
+                input.value = "-1";
+                label.innerHTML  = '&#9660;';
+                break;
+            case "-1":
+                input.value = "0";
+                label.innerHTML  = '&#8661;';
+                break;
+        }
+    }
+</script>
+}

@@ -3,14 +3,17 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - RecipeSiteAspNet</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true"/>
+    <title>@ViewData["Title"]</title>
+    <meta name="description" content="@ViewData["Description"]">
+
+    <link rel="stylesheet" href="~/css/reset.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/RecipeSiteAspNet.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/colored-bootstrap.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/colored-bootstrap.css" asp-append-version="true" />
 
 </head>
-<body class="bg-secondary">
+<body class="bg-secondary d-flex flex-column min-vh-100">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-5 fixed-top">
             <div class="container-fluid">
@@ -36,15 +39,18 @@
         </nav>
     </header>
 
-    <div class="container mt-5">
-        <main role="main" class="mb-1 mt-1 pt-3">
-            @RenderBody()
-        </main>
-    </div>
+    <main role="main" class="container mt-5 pt-3 mb-1">
+        @RenderBody()
+    </main>
 
-    <footer class="border-top footer text-muted">
-
+    <div class="mt-5"></div>
+    <footer class="bg-dark  mt-auto">
+        <!-- Grid container -->
+        <div class="text-center text-light p-3">
+            © 2022
+        </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

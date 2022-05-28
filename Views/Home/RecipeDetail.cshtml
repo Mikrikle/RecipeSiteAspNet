@@ -2,7 +2,8 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Add";
+    ViewData["Title"] = "Рецепт";
+    ViewData["Description"] = "Подробная информация о рецепте";
 }
 
 
@@ -19,13 +20,12 @@
                 <a class="link-dark text-decoration-none" asp-controller="Administration" asp-action="ManageCategories"><p>@Model.recipe.Category?.Name</p></a>
                 <hr />
             </div>
-            <div class="d-flex flex-row flex-fill">
-                <div class="m-3">
-                    <img class="img-max400 rounded img-covered" src="@Url.Content(@Model.recipe.Img?.Path)" alt="@Model.recipe.Img?.Name" />
-                </div>
-                <div>
-                    <p class="d-inline-block card-text text-wrap text-truncate card-text">@Model.recipe.Description</p>
-                </div>
+            <div class="d-flex justify-content-around flex-wrap flex-fill">
+
+                <img class="img-max400 img-min300 rounded img-covered" src="@Url.Content(@Model.recipe.Img?.Path)" alt="@Model.recipe.Img?.Name" />
+
+                <p class="card-text text-wrap">@Model.recipe.Description</p>
+
             </div>
         </div>
         <div class="card-footer">
@@ -35,10 +35,10 @@
                     <tr><th>Ингредиенты</th></tr>
                 </thead>
                 <tbody>
-                @foreach(string line in @Model.recipe.Ingredients.Split('\n'))
-                {
-                    <tr><td>@line</td></tr>
-                }
+                    @foreach (string line in @Model.recipe.Ingredients.Split('\n'))
+                    {
+                        <tr><td>@line</td></tr>
+                    }
                 </tbody>
             </table>
         </div>

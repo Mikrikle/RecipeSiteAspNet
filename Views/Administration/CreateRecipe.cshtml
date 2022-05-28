@@ -2,11 +2,12 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Add";
+    ViewData["Title"] = "Создание рецепта";
+    ViewData["Description"] = "Создание рецепта. Добавление рецепта";
 }
 
 <div class="container m-3 p-3 flex-row">
-    <h2>Добавление рецепта</h2>
+    <h2>Создание рецепта</h2>
     <form asp-action="CreateRecipe" asp-controller="Administration" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
         <partial name="_RecipeForm.cshtml" />
