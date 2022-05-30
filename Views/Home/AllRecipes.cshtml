@@ -12,7 +12,7 @@
         <div class="col">
             <div class="card">
                 <a style="text-decoration: none;" asp-controller="Home" asp-action="RecipeDetail" asp-route-id=@recipe.RecipeID>
-                    <p class="card-header bg-mainorange text-black card-name fw-weight-bold fs-5">
+                    <p class="card-header bg-accent text-black card-name fw-weight-bold fs-5">
                         @recipe.Name
                     </p>
                     <img src="@Url.Content(@recipe.Img?.Path)" class="card-img-top img-thumbnail img-covered" alt="@recipe.Img?.Name">

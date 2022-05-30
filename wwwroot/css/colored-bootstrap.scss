@@ -10,7 +10,7 @@ $dark: #3D4049;
 @import "../lib/bootstrap/scss/_variables";
 
 $custom-theme-colors: ( 
-    "mainorange": #EC9E44
+    "accent": #EC9E44,
 );
 
 $theme-colors: map-merge($custom-theme-colors, $theme-colors);
