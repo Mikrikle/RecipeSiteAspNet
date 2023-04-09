@@ -34,7 +34,7 @@ namespace RecipeSiteAspNet.Controllers
         {
             if (id == null)
                 return NotFound();
-            // Получение рецепта и всях связных моделей
+            // Получение рецепта и всех связных моделей
             Recipe? recipe = _db.Recipes.Include(r => r.Img).Include(r => r.Author)
                 .Single(r => r.RecipeID == id);
             if (recipe == null)

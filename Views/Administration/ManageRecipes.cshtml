@@ -16,67 +16,68 @@
     <a class="btn btn-primary" asp-action="CreateRecipe">Добавить рецепт</a>
 </div>
 
+<form method="GET" id="FilterForm">
+</form>
+
 <div class="table-responsive">
-<table class="table table-hover">
-    <thead>
-        <form method="GET" id="FilterForm">
-        <tr class="table-dark">
-            <th class="text-light">
-                Фильтры
-            </th>
-            <th>
-                <input class="form-control" name="name" type="text" id="filterName" placeholder="Название" />
-            </th>
-            <th>
-                <select class="form-select" name="categoryId" id="filterCategory">
-                    <option value="" selected>Все категории</option>
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-dark">
+                <th class="text-light">
+                    Фильтры
+                </th>
+                <th>
+                    <input form="FilterForm" class="form-control" name="name" type="text" id="filterName" placeholder="Название" />
+                </th>
+                <th>
+                    <select form="FilterForm" class="form-select" name="categoryId" id="filterCategory">
+                        <option value="" selected>Все категории</option>
                         @foreach (Category c in ViewBag.Categories)
                         {
-                        <option value="@c.CategoryID">@c.Name</option>
+                            <option value="@c.CategoryID">@c.Name</option>
                         }
-                </select>
-            </th>
-            <th>
+                    </select>
+                </th>
+                <th>
 
-            </th>
-            <th>
-                <input class="btn btn-primary" form="FilterForm" type="submit" value="Применить" />
-                <input class="btn btn-secondary" form="FilterForm" type="reset" value="Очистить" />
-            </th>
-        </tr>
-        </form>
-
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Название</th>
-            <th scope="col">Категория</th>
-            <th scope="col">
-                Время приготовления
-                <input name="sortOrderCookTime" form="FilterForm" type="number" class="stateInput" id="sortOrderCookTime" value="0">
-                <span class="arrows btn btn-outline-primary">&#8661;</span>
-            </th>
-
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (Recipe r in Model)
-        {
-            <tr>
-                <th><a class="btn btn-outline-primary" asp-controller="Home" asp-action="RecipeDetail" asp-route-id=@r.RecipeID>@r.RecipeID</a></th>
-                <td>@r.Name</td>
-                <td>@r.Category?.Name</td>
-                <td>@r.CookingTimeMinutes (мин)</td>
-                <td>
-                    <a class="btn btn-primary " asp-action="RecipeRedact" asp-route-id=@r.RecipeID>Редактировать</a>
-                    <form class="d-inline" asp-action="DeleteRecipe" asp-route-id=@r.RecipeID>
-                        @Html.AntiForgeryToken()
-                        <input class="btn btn-danger" type="submit" value="Удалить" />
-                    </form>
-                </td>
+                </th>
+                <th>
+                    <input class="btn btn-primary" form="FilterForm" type="submit" value="Применить" />
+                    <input class="btn btn-secondary" form="FilterForm" type="reset" value="Очистить" />
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Название</th>
+                <th scope="col">Категория</th>
+                <th scope="col">
+                    Время приготовления
+                    <input name="sortOrderCookTime" form="FilterForm" type="number" class="stateInput" id="sortOrderCookTime" value="0">
+                    <span class="arrows btn btn-outline-primary">&#8661;</span>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Recipe r in Model)
+            {
+                <tr>
+                    <th><a class="btn btn-outline-primary" asp-controller="Home" asp-action="RecipeDetail" asp-route-id=@r.RecipeID>@r.RecipeID</a></th>
+                    <td>@r.Name</td>
+                    <td>@r.Category?.Name</td>
+                    <td>@r.CookingTimeMinutes (мин)</td>
+                    <td>
+                        <a class="btn btn-primary " asp-action="RecipeRedact" asp-route-id=@r.RecipeID>Редактировать</a>
+                        <form class="d-inline" asp-action="DeleteRecipe" asp-route-id=@r.RecipeID>
+                            @Html.AntiForgeryToken()
+                            <input class="btn btn-danger" type="submit" value="Удалить" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 
 @section Scripts
